@@ -1,1 +1,1 @@
-# play-scala-slick
+# 自己学習用
