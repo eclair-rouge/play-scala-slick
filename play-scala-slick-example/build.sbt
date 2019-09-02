@@ -4,7 +4,7 @@ version := "2.7.x"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.13.0"
+scalaVersion := "2.12.0"
 
 libraryDependencies ++= Seq(
     "mysql" % "mysql-connector-java" % "8.0.17",
