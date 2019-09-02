@@ -1,8 +1,7 @@
 package controllers
 
 import javax.inject._
-
-import models._
+import services.dao._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
@@ -12,7 +11,7 @@ import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PersonController @Inject()(repo: PersonRepository,
+class PersonController @Inject()(dao: PeopleDao,
                                   cc: MessagesControllerComponents
                                 )(implicit ec: ExecutionContext)
   extends MessagesAbstractController(cc) {
@@ -50,7 +49,7 @@ class PersonController @Inject()(repo: PersonRepository,
       },
       // There were no errors in the from, so create the person.
       person => {
-        repo.create(person.name, person.age).map { _ =>
+        dao.add(person.name, person.age).map { _ =>
           // If successful, we simply redirect to the index page.
           Redirect(routes.PersonController.index).flashing("success" -> "user.created")
         }
@@ -62,8 +61,11 @@ class PersonController @Inject()(repo: PersonRepository,
    * A REST endpoint that gets all the people as JSON.
    */
   def getPersons = Action.async { implicit request =>
-    repo.list().map { people =>
-      Ok(Json.toJson(people))
+    dao.listAll().map { people =>
+      val ret = people.map(p =>
+        p.name
+      )
+      Ok(Json.toJson(ret))
     }
   }
 }

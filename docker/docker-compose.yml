@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql_study
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: study
+      MYSQL_USER: study
+      MYSQL_PASSWORD: study
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+    - ./study/mysql/data:/var/lib/mysql
+    - ./study/mysql/conf.d:/etc/mysql/conf.d
+    - ./study/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+    - 3306:3306
